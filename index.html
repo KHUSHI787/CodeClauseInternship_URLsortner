@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <label for="longUrl">Enter a long URL:</label>
+    <input type="url" id="longUrl" placeholder="https://example.com" required>
+    <button onclick="shortenUrl()">Shorten</button>
+    <p>Shortened URL: <a id="shortenedUrl" target="_blank"></a></p>
+
+    <script>
+        function shortenUrl() {
+            const longUrlInput = document.getElementById("longUrl");
+            const shortenedUrlOutput = document.getElementById("shortenedUrl");
+
+            const longUrl = longUrlInput.value;
+
+            if (longUrl.trim() === "") {
+                alert("Please enter a valid URL.");
+                return;
+            }
+
+            // Replace the following URL with the URL of a real URL shortening service (e.g., TinyURL).
+            const apiUrl = "https://api.tinyurl.com/create?longurl=" + encodeURIComponent(longUrl);
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.short_url) {
+                        shortenedUrlOutput.href = data.short_url;
+                        shortenedUrlOutput.textContent = data.short_url;
+                    } else {
+                        alert("Error: Unable to shorten URL.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error: Unable to shorten URL.");
+                });
+        }
+    </script>
+</body>
+</html>
